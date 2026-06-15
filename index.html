@@ -33,7 +33,7 @@
 
   html { 
     scroll-behavior: smooth; 
-    overflow-x: hidden; /* Corrección: Red de seguridad global */
+    overflow-x: hidden; 
   }
 
   body {
@@ -43,7 +43,7 @@
     line-height: 1.5;
     font-feature-settings: "ss01", "cv11";
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden; /* Corrección: Red de seguridad global */
+    overflow-x: hidden;
   }
 
   /* ─── HERO ─────────────────────────────────────────────── */
@@ -649,7 +649,6 @@
     letter-spacing: -0.02em;
   }
 
-  /* Corrección: Contenedor para tabla con scroll horizontal en mobile */
   .table-responsive {
     width: 100%;
     overflow-x: auto;
@@ -1363,17 +1362,18 @@
     .impact-section .content,
     .stack-section .content { padding: 80px 40px; }
     .cartera-grid, .fin-grid, .stack-grid { grid-template-columns: 1fr; gap: 48px; }
+    
+    /* CORRECCIÓN 1: Evitar que la tarjeta azul fuerce la pantalla a 2 columnas */
     .learn-grid, .dev-next-grid { grid-template-columns: 1fr; }
+    .learn-card.closing { grid-column: auto; }
+    
     .dev-row, .dev-row-head { grid-template-columns: 1fr; gap: 8px; }
     .dev-row { padding: 24px 0; }
     .dev-row-head { display: none; }
-    
-    /* Corrección: Consistencia visual en fallback de etiquetas mobile de la sección 06 */
     .dev-cell.col-1::before { content: 'Habilidad core — '; font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--teal-500); display: block; margin-bottom: 4px; font-weight: 600; }
     .dev-cell.col-2::before { content: 'En desarrollo activo — '; font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--slate-400); display: block; margin-bottom: 4px; }
     .dev-cell.col-3::before { content: 'Próximos 12–18 meses — '; font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--slate-400); display: block; margin-bottom: 4px; }
     .dev-cell.empty { display: none; }
-    
     .impact-split { grid-template-columns: 1fr; }
     .impact-hero-numbers { grid-template-columns: 1fr; }
     .impact-hero-cell { border-right: none; border-bottom: 1px solid var(--slate-200); }
@@ -1386,12 +1386,9 @@
     .hero { padding: 24px 24px; }
     .hero-nav { flex-direction: column; gap: 16px; align-items: flex-start; }
     .hero-meta { font-size: 10px; gap: 16px; }
-    
-    /* Corrección: Hero 2 columnas en mobile con tamaño ajustado */
     .hero-kpis { grid-template-columns: 1fr 1fr; }
     .kpi-card { padding: 20px 16px; }
     .kpi-card-value { font-size: 32px; }
-    
     section.content,
     .impact-section .content,
     .stack-section .content { padding: 64px 24px; }
@@ -1399,16 +1396,26 @@
     .breakdown-pct { grid-column: 2; grid-row: 2; text-align: right; }
     .dpp-card, .pos-card { padding: 32px 24px; }
     .dpp-flow { grid-template-columns: 1fr; gap: 16px; padding: 24px; }
-    
-    /* Corrección: Badge de arrow contrarresta la rotación de la flecha */
     .dpp-arrow { transform: rotate(90deg); margin: 16px auto; }
     .dpp-arrow .delta { transform: rotate(-90deg) translate(-15px, -15px); transform-origin: center; display: inline-block; }
+    
+    /* CORRECCIÓN 2: Impacto financiero (.dpp-impact) en 1 columna para que no se apriete */
+    .dpp-impact { grid-template-columns: 1fr; gap: 32px; }
+    
+    /* CORRECCIÓN ADICIONAL: Mejor padding en las tarjetas de aprendizaje para pantallas chicas */
+    .learn-card { padding: 32px 24px; }
     
     .tools-grid { grid-template-columns: repeat(2, 1fr); }
     .pos-num { font-size: 72px; }
     footer { padding: 48px 24px 24px; }
     
-    /* Corrección: Botón flotante de CV en mobile (achica a ícono) */
+    /* CORRECCIÓN 3: Footer bottom en columna para que el texto no se aplaste */
+    .footer-bottom { 
+      flex-direction: column; 
+      align-items: flex-start; 
+      gap: 16px; 
+    }
+    
     .cv-download {
       bottom: 16px;
       right: 16px;
@@ -1422,7 +1429,6 @@
     .cv-download svg { margin: 0; width: 22px; height: 22px; }
   }
 
-  /* Corrección: Tipografía adaptada para celulares muy chicos */
   @media (max-width: 380px) {
     .pos-num, 
     .breakdown-count, 
@@ -1453,6 +1459,7 @@
 </head>
 <body>
 
+<!-- ═══════════════ HERO ═══════════════════════════════ -->
 <header class="hero">
   <nav class="hero-nav">
     <div class="hero-mark">
@@ -1526,6 +1533,7 @@
   </div>
 </header>
 
+<!-- ═══════════════ SECCIÓN 1: CARTERA ═══════════════════ -->
 <section class="content reveal">
   <div class="section-eyebrow">01 — Alcance de la cartera</div>
   <h2 class="section-title">Una cartera de <em>138 órdenes de compra</em><br>distribuidas en 4 países.</h2>
@@ -1607,6 +1615,7 @@
   </p>
 </section>
 
+<!-- ═══════════════ SECCIÓN 2: IMPACTO COMERCIAL ═══════════ -->
 <section class="impact-section">
   <div class="content reveal">
     <div class="section-eyebrow">02 — Impacto comercial</div>
@@ -1753,6 +1762,7 @@
   </div>
 </section>
 
+<!-- ═══════════════ SECCIÓN 3: APRENDIZAJE CONTINUO ═══════════ -->
 <section class="content reveal">
   <div class="section-eyebrow">03 — Aprendizaje continuo</div>
   <h2 class="section-title">Adaptabilidad y <em>flexibilidad</em><br>como motor de crecimiento.</h2>
@@ -1808,6 +1818,7 @@
   </div>
 </section>
 
+<!-- ═══════════════ SECCIÓN 4: GESTIÓN FINANCIERA ═══════════ -->
 <section class="content reveal">
   <div class="section-eyebrow">04 — Gestión financiera</div>
   <h2 class="section-title">Disciplina de <em>capital de trabajo</em><br>aplicada a toda la cartera.</h2>
@@ -1863,6 +1874,7 @@
   </div>
 </section>
 
+<!-- ═══════════════ SECCIÓN 5: STACK & TRAYECTORIA ═══════════ -->
 <section class="stack-section">
   <div class="content reveal">
     <div class="section-eyebrow" style="color: var(--teal-400);">05 — Trayectoria</div>
@@ -1932,6 +1944,7 @@
   </div>
 </section>
 
+<!-- ═══════════════ SECCIÓN 6: PLAN DE DESARROLLO ═══════════ -->
 <section class="content reveal">
   <div class="section-eyebrow">06 — Plan de desarrollo profesional</div>
   <h2 class="section-title">De la <em>gestión operativa</em><br>al rol estratégico.</h2>
@@ -1994,6 +2007,7 @@
   </div>
 </section>
 
+<!-- ═══════════════ FOOTER ═══════════════════════════════ -->
 <footer>
   <div class="footer-content">
     <div class="footer-cta">
