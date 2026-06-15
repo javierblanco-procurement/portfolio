@@ -1413,6 +1413,70 @@
     opacity: 1;
     transform: translateY(0);
   }
+/* --- PARCHE CORRECTIVO PARA CELULARES --- */
+@media (max-width: 768px) {
+    /* 1. Evitar que todo toque los bordes y quitar desbordamiento lateral */
+    body, html {
+        overflow-x: hidden !important;
+    }
+    main, section, .container {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+
+    /* 2. Corrección Captura 26E265FB-D5D1-4099-9880-16DEB21E29D1_1_201_a.jpeg: Superposición en métricas */
+    /* Forzamos a que los bloques sigan el flujo natural hacia abajo sin pisarse */
+    .hero, section, div[class*="flex"] {
+        height: auto !important;
+    }
+    /* Si el texto "AR·UY·CL..." se pisaba con "DETALLE DE LA GESTIÓN", esto les da aire */
+    span, p, h1, h2, h3 {
+        position: relative !important;
+        top: auto !important;
+        bottom: auto !important;
+    }
+
+    /* 3. Corrección Captura 9A09265F-8B07-46B4-81A6-C234BED64706_1_201_a.jpeg: Desglose por categoría */
+    /* Hace que la tabla se pueda deslizar de costado con el dedo sin romper el ancho de la página */
+    table {
+        display: block !important;
+        width: 100% !important;
+        overflow-x: auto !important;
+        white-space: nowrap !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+    th, td {
+        padding: 10px 12px !important;
+        font-size: 0.9rem !important;
+    }
+
+    /* 4. Corrección Capturas 0588FB65-5C69-4A1E-80D2-0FF7119A5A8B_4_5005_c.jpeg y B535D654-3C7C-403B-87ED-1FBD3660C06A_1_201_a.jpeg: Tipografía */
+    /* Achicamos un toque los títulos gigantes para que entren más palabras por línea */
+    h1, .text-6xl, .text-7xl {
+        font-size: 2.3rem !important;
+        line-height: 1.2 !important;
+    }
+    h2, .text-4xl, .text-5xl {
+        font-size: 1.8rem !important;
+        line-height: 1.3 !important;
+    }
+
+    /* 5. Corrección Captura 289B9F1B-9F90-4830-B3A3-69F7A319899F_1_201_a.jpeg: Footer colapsado */
+    /* Ponemos los textos uno debajo del otro, centrados, y damos espacio para que el botón flotante no tape nada */
+    footer, .footer {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+        gap: 1rem !important;
+        padding-bottom: 100px !important; 
+    }
+    footer div, footer p {
+        width: 100% !important;
+        text-align: center !important;
+    }
+}
+/* --- FIN DEL PARCHE --- */
 </style>
 </head>
 <body>
