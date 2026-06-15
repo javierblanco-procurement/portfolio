@@ -31,7 +31,10 @@
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  html { scroll-behavior: smooth; }
+  html { 
+    scroll-behavior: smooth; 
+    overflow-x: hidden; /* Corrección: Red de seguridad global */
+  }
 
   body {
     font-family: var(--font-body);
@@ -40,6 +43,7 @@
     line-height: 1.5;
     font-feature-settings: "ss01", "cv11";
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden; /* Corrección: Red de seguridad global */
   }
 
   /* ─── HERO ─────────────────────────────────────────────── */
@@ -265,7 +269,6 @@
     margin: 0 auto;
   }
 
-  /* Sections inside a wrapper (impact, stack) need different padding handling */
   .impact-section .content,
   .stack-section .content {
     padding: 120px 96px;
@@ -644,6 +647,14 @@
     margin-bottom: 32px;
     color: var(--navy-900);
     letter-spacing: -0.02em;
+  }
+
+  /* Corrección: Contenedor para tabla con scroll horizontal en mobile */
+  .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 12px;
   }
 
   .cat-table {
@@ -1333,15 +1344,6 @@
     text-transform: uppercase;
   }
 
-  @media (max-width: 640px) {
-    .cv-download {
-      bottom: 16px;
-      right: 16px;
-      padding: 12px 18px 12px 14px;
-    }
-    .cv-download .label-full { display: none; }
-  }
-
   /* ─── RESPONSIVE ──────────────────────────────────────── */
   @media (max-width: 1280px) {
     .hero { padding: 40px 56px; }
@@ -1365,9 +1367,13 @@
     .dev-row, .dev-row-head { grid-template-columns: 1fr; gap: 8px; }
     .dev-row { padding: 24px 0; }
     .dev-row-head { display: none; }
+    
+    /* Corrección: Consistencia visual en fallback de etiquetas mobile de la sección 06 */
+    .dev-cell.col-1::before { content: 'Habilidad core — '; font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--teal-500); display: block; margin-bottom: 4px; font-weight: 600; }
     .dev-cell.col-2::before { content: 'En desarrollo activo — '; font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--slate-400); display: block; margin-bottom: 4px; }
     .dev-cell.col-3::before { content: 'Próximos 12–18 meses — '; font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: var(--slate-400); display: block; margin-bottom: 4px; }
     .dev-cell.empty { display: none; }
+    
     .impact-split { grid-template-columns: 1fr; }
     .impact-hero-numbers { grid-template-columns: 1fr; }
     .impact-hero-cell { border-right: none; border-bottom: 1px solid var(--slate-200); }
@@ -1380,8 +1386,12 @@
     .hero { padding: 24px 24px; }
     .hero-nav { flex-direction: column; gap: 16px; align-items: flex-start; }
     .hero-meta { font-size: 10px; gap: 16px; }
-    .hero-kpis { grid-template-columns: 1fr; }
-    .kpi-card-value { font-size: 44px; }
+    
+    /* Corrección: Hero 2 columnas en mobile con tamaño ajustado */
+    .hero-kpis { grid-template-columns: 1fr 1fr; }
+    .kpi-card { padding: 20px 16px; }
+    .kpi-card-value { font-size: 32px; }
+    
     section.content,
     .impact-section .content,
     .stack-section .content { padding: 64px 24px; }
@@ -1389,10 +1399,36 @@
     .breakdown-pct { grid-column: 2; grid-row: 2; text-align: right; }
     .dpp-card, .pos-card { padding: 32px 24px; }
     .dpp-flow { grid-template-columns: 1fr; gap: 16px; padding: 24px; }
+    
+    /* Corrección: Badge de arrow contrarresta la rotación de la flecha */
     .dpp-arrow { transform: rotate(90deg); margin: 16px auto; }
+    .dpp-arrow .delta { transform: rotate(-90deg) translate(-15px, -15px); transform-origin: center; display: inline-block; }
+    
     .tools-grid { grid-template-columns: repeat(2, 1fr); }
     .pos-num { font-size: 72px; }
     footer { padding: 48px 24px 24px; }
+    
+    /* Corrección: Botón flotante de CV en mobile (achica a ícono) */
+    .cv-download {
+      bottom: 16px;
+      right: 16px;
+      width: 52px;
+      height: 52px;
+      padding: 0;
+      border-radius: 50%;
+      justify-content: center;
+    }
+    .cv-download .label-full { display: none; }
+    .cv-download svg { margin: 0; width: 22px; height: 22px; }
+  }
+
+  /* Corrección: Tipografía adaptada para celulares muy chicos */
+  @media (max-width: 380px) {
+    .pos-num, 
+    .breakdown-count, 
+    .dpp-state .days { font-size: 36px !important; }
+    .kpi-card-value { font-size: 26px !important; }
+    .dev-next-card .num { font-size: 40px !important; }
   }
 
   /* Print */
@@ -1417,7 +1453,6 @@
 </head>
 <body>
 
-<!-- ═══════════════ HERO ═══════════════════════════════ -->
 <header class="hero">
   <nav class="hero-nav">
     <div class="hero-mark">
@@ -1491,7 +1526,6 @@
   </div>
 </header>
 
-<!-- ═══════════════ SECCIÓN 1: CARTERA ═══════════════════ -->
 <section class="content reveal">
   <div class="section-eyebrow">01 — Alcance de la cartera</div>
   <h2 class="section-title">Una cartera de <em>138 órdenes de compra</em><br>distribuidas en 4 países.</h2>
@@ -1573,7 +1607,6 @@
   </p>
 </section>
 
-<!-- ═══════════════ SECCIÓN 2: IMPACTO COMERCIAL ═══════════ -->
 <section class="impact-section">
   <div class="content reveal">
     <div class="section-eyebrow">02 — Impacto comercial</div>
@@ -1648,68 +1681,70 @@
 
     <div class="categories-block">
       <h3>Desglose por categoría</h3>
-      <table class="cat-table">
-        <thead>
-          <tr>
-            <th style="width:18%;">Categoría</th>
-            <th style="width:8%;">Procesos</th>
-            <th class="cat-bar-cell">Participación</th>
-            <th class="right">Impacto USD</th>
-            <th class="right" style="width:10%;">% Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="cat-name">Food Service</td>
-            <td>1</td>
-            <td class="cat-bar-cell"><div class="cat-bar"><div class="cat-bar-fill" style="width:100%;"></div></div></td>
-            <td class="right cat-value">USD 97.156</td>
-            <td class="right cat-pct">49,5%</td>
-          </tr>
-          <tr>
-            <td class="cat-name">Access Control</td>
-            <td>2</td>
-            <td class="cat-bar-cell"><div class="cat-bar"><div class="cat-bar-fill" style="width:61%;"></div></div></td>
-            <td class="right cat-value">USD 59.099</td>
-            <td class="right cat-pct">30,1%</td>
-          </tr>
-          <tr>
-            <td class="cat-name">Routine Cleaning</td>
-            <td>3</td>
-            <td class="cat-bar-cell"><div class="cat-bar"><div class="cat-bar-fill" style="width:32%;"></div></div></td>
-            <td class="right cat-value">USD 31.173</td>
-            <td class="right cat-pct">15,9%</td>
-          </tr>
-          <tr>
-            <td class="cat-name">Pest Control</td>
-            <td>2</td>
-            <td class="cat-bar-cell"><div class="cat-bar"><div class="cat-bar-fill" style="width:5%;"></div></div></td>
-            <td class="right cat-value">USD 4.644</td>
-            <td class="right cat-pct">2,4%</td>
-          </tr>
-          <tr>
-            <td class="cat-name">Gardening</td>
-            <td>2</td>
-            <td class="cat-bar-cell"><div class="cat-bar"><div class="cat-bar-fill" style="width:2.2%;"></div></div></td>
-            <td class="right cat-value">USD 2.091</td>
-            <td class="right cat-pct">1,1%</td>
-          </tr>
-          <tr>
-            <td class="cat-name">Facilities (mobiliario)</td>
-            <td>1</td>
-            <td class="cat-bar-cell"><div class="cat-bar"><div class="cat-bar-fill" style="width:2%;"></div></div></td>
-            <td class="right cat-value">USD 1.898</td>
-            <td class="right cat-pct">1,0%</td>
-          </tr>
-          <tr>
-            <td class="cat-name">Motoboy</td>
-            <td>1</td>
-            <td class="cat-bar-cell"><div class="cat-bar"><div class="cat-bar-fill" style="width:0.4%;"></div></div></td>
-            <td class="right cat-value">USD 367</td>
-            <td class="right cat-pct">0,2%</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-responsive">
+        <table class="cat-table">
+          <thead>
+            <tr>
+              <th style="width:18%;">Categoría</th>
+              <th style="width:8%;">Procesos</th>
+              <th class="cat-bar-cell">Participación</th>
+              <th class="right">Impacto USD</th>
+              <th class="right" style="width:10%;">% Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="cat-name">Food Service</td>
+              <td>1</td>
+              <td class="cat-bar-cell"><div class="cat-bar"><div class="cat-bar-fill" style="width:100%;"></div></div></td>
+              <td class="right cat-value">USD 97.156</td>
+              <td class="right cat-pct">49,5%</td>
+            </tr>
+            <tr>
+              <td class="cat-name">Access Control</td>
+              <td>2</td>
+              <td class="cat-bar-cell"><div class="cat-bar"><div class="cat-bar-fill" style="width:61%;"></div></div></td>
+              <td class="right cat-value">USD 59.099</td>
+              <td class="right cat-pct">30,1%</td>
+            </tr>
+            <tr>
+              <td class="cat-name">Routine Cleaning</td>
+              <td>3</td>
+              <td class="cat-bar-cell"><div class="cat-bar"><div class="cat-bar-fill" style="width:32%;"></div></div></td>
+              <td class="right cat-value">USD 31.173</td>
+              <td class="right cat-pct">15,9%</td>
+            </tr>
+            <tr>
+              <td class="cat-name">Pest Control</td>
+              <td>2</td>
+              <td class="cat-bar-cell"><div class="cat-bar"><div class="cat-bar-fill" style="width:5%;"></div></div></td>
+              <td class="right cat-value">USD 4.644</td>
+              <td class="right cat-pct">2,4%</td>
+            </tr>
+            <tr>
+              <td class="cat-name">Gardening</td>
+              <td>2</td>
+              <td class="cat-bar-cell"><div class="cat-bar"><div class="cat-bar-fill" style="width:2.2%;"></div></div></td>
+              <td class="right cat-value">USD 2.091</td>
+              <td class="right cat-pct">1,1%</td>
+            </tr>
+            <tr>
+              <td class="cat-name">Facilities (mobiliario)</td>
+              <td>1</td>
+              <td class="cat-bar-cell"><div class="cat-bar"><div class="cat-bar-fill" style="width:2%;"></div></div></td>
+              <td class="right cat-value">USD 1.898</td>
+              <td class="right cat-pct">1,0%</td>
+            </tr>
+            <tr>
+              <td class="cat-name">Motoboy</td>
+              <td>1</td>
+              <td class="cat-bar-cell"><div class="cat-bar"><div class="cat-bar-fill" style="width:0.4%;"></div></div></td>
+              <td class="right cat-value">USD 367</td>
+              <td class="right cat-pct">0,2%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <p style="margin-top: 32px; font-size: 13px; color: var(--slate-500); line-height: 1.6; max-width: 740px;">
         Categorías generales gestionadas en cartera (sin saving individualizado en este reporte):
         Real Estate · Catering · Security · Cleaning · Utilities · Maintenance · Transportation.
@@ -1718,7 +1753,6 @@
   </div>
 </section>
 
-<!-- ═══════════════ SECCIÓN 3: APRENDIZAJE CONTINUO ═══════════ -->
 <section class="content reveal">
   <div class="section-eyebrow">03 — Aprendizaje continuo</div>
   <h2 class="section-title">Adaptabilidad y <em>flexibilidad</em><br>como motor de crecimiento.</h2>
@@ -1774,7 +1808,6 @@
   </div>
 </section>
 
-<!-- ═══════════════ SECCIÓN 4: GESTIÓN FINANCIERA ═══════════ -->
 <section class="content reveal">
   <div class="section-eyebrow">04 — Gestión financiera</div>
   <h2 class="section-title">Disciplina de <em>capital de trabajo</em><br>aplicada a toda la cartera.</h2>
@@ -1830,7 +1863,6 @@
   </div>
 </section>
 
-<!-- ═══════════════ SECCIÓN 5: STACK & TRAYECTORIA ═══════════ -->
 <section class="stack-section">
   <div class="content reveal">
     <div class="section-eyebrow" style="color: var(--teal-400);">05 — Trayectoria</div>
@@ -1900,7 +1932,6 @@
   </div>
 </section>
 
-<!-- ═══════════════ SECCIÓN 6: PLAN DE DESARROLLO ═══════════ -->
 <section class="content reveal">
   <div class="section-eyebrow">06 — Plan de desarrollo profesional</div>
   <h2 class="section-title">De la <em>gestión operativa</em><br>al rol estratégico.</h2>
@@ -1963,7 +1994,6 @@
   </div>
 </section>
 
-<!-- ═══════════════ FOOTER ═══════════════════════════════ -->
 <footer>
   <div class="footer-content">
     <div class="footer-cta">
